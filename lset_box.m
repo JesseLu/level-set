@@ -17,7 +17,7 @@ function [phi] = lset_box(pos, dim)
 %     PHI: Level-set function implicitly describing a box.
 
 
-Phi = lset_plane(pos-dim/2, [-1 0]);
+phi = lset_plane(pos-dim/2, [-1 0]);
 phi = lset_intersect(phi, lset_plane(pos-dim/2, [0 -1]));
 phi = lset_intersect(phi, lset_plane(pos+dim/2, [+1 0]));
 phi = lset_intersect(phi, lset_plane(pos+dim/2, [0 +1]));

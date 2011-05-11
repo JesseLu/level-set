@@ -15,6 +15,6 @@ function [V] = lset_velfield(xfunc, yfunc)
 %         V contains two fields, V.x and V.y, which define the velocity vector
 %         on the grid.
 
-Global LSET_GRID
+global LSET_GRID
 V.x = xfunc(LSET_GRID.x, LSET_GRID.y);
 V.y = yfunc(LSET_GRID.x, LSET_GRID.y);
