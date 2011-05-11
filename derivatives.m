@@ -17,7 +17,7 @@ function [dx, dy, dxx, dxy, dyy] = derivatives(phi)
 
 
 % Short-cut function to shift phi.
-shift = @(s) shift_array(phi, s);
+shift = @(s) shift_array(phi, -s);
 
 
     %

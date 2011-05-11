@@ -18,14 +18,25 @@ function [A] = shift_array(A, shift)
 %     A: 2-dimensional array.
 %         The shifted array.
 
+
+    %
+    % Shift in the horizontal (x) direction.
+    %
+
 if (shift(1) > 0)
-    A = [A(:,shift(1):-1:1), A(:,1:end-shift(1))];
+    A = [A(shift(1):-1:1,:); A(1:end-shift(1),:)];
 elseif (shift(1) < 0)
-    A = [A(:,-shift(1)+1:end), A(:,end:-1:end+shift(1)+1)];
+    A = [A(-shift(1)+1:end,:); A(end:-1:end+shift(1)+1,:)];
 end
 
+
+    %
+    % Shift in the vertical (y) direction.
+    %
+
 if (shift(2) > 0)
-    A = [A(shift(2):-1:1,:); A(1:end-shift(2),:)];
+    A = [A(:,shift(2):-1:1), A(:,1:end-shift(2))];
 elseif (shift(2) < 0)
-    A = [A(-shift(2)+1:end,:); A(end:-1:end+shift(2)+1,:)];
+    A = [A(:,-shift(2)+1:end), A(:,end:-1:end+shift(2)+1)];
 end
+
