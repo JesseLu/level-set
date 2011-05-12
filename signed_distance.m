@@ -2,7 +2,7 @@ function [phi, err_hist] = signed_distance(phi, err_limit)
 % [PHI, ERR_HIST] = SIGNED_DISTANCE(PHI, ERR_LIMIT)
 %
 % Description
-%     Convert PHI to a signed distance function.
+%     Convert PHI to a signed distance function. 
 % 
 % Inputs:
 %     PHI: 2-dimensional array.
@@ -22,11 +22,23 @@ function [phi, err_hist] = signed_distance(phi, err_limit)
 %     ERR: vector.
 %         List of the error at every iteration of the algorithm. Use ERR(END) 
 %         to access the final error. This should be less than ERR_LIMIT.
+% 
+% Errors:
+%     If PHI has no boundaries, an error will be produced.
 
 
 
 % Assume effectively unit-less grid resolution.
 grid_spacing = 1.0;
+
+
+    %
+    % Make sure there are actually boundaries on the grid!
+    %
+
+if (all(sign(phi) == 1) | all(sign(phi) == -1))
+    error('No interfaces found on the grid.');
+end
 
 
     %
