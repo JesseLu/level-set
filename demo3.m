@@ -1,14 +1,16 @@
-% DEMO1
+% DEMO3
 %
 % Description
-%     Move an interface in a "pinching" velocity field. Phi is kept relatively
-%     close to a signed distance function. 
-%     
-%     This demo shows the merging and separation of two interfaces, as well as
-%     the interfaces leaving the grid.
+%     Find the interface of a shape.
+% 
+%     Given a shape, this demo will attempt to use a level-set function under
+%     an external velocity field to find the shape.
+% 
+%     Here, the shape is actually created using a level-set function, and the
+%     velocity field is simply it's gradient.
 
 % Print out help message.
-help demo1
+help demo3
 
     %
     % Initialize grid.
@@ -21,8 +23,7 @@ lset_grid([80 80]);
     % Construct the initial structure/interface.
     %
 
-phi = lset_circle([-10 0], 3);
-phi = lset_union(phi, lset_circle([10 0], 3));
+phi = lset_circle([10 0], 30);
 
 
     % 
@@ -33,10 +34,18 @@ phi = lset_union(phi, lset_circle([10 0], 3));
 
 
     % 
-    % Construct a "pinching" velocity field.
+    % Construct the shape that we will attempt to find.
     %
 
-V = lset_velfield(@(x, y) -(x+0.1).^-1 .* (abs(y)+1).^-1, @(x, y) 0.2*sign(y));
+theta = lset_circle([0 0], 30);
+
+
+    % 
+    % Construct a velocity field.
+    %
+
+[dx dy] = derivatives(theta);
+V = lset_velfield(@(x, y) -dx.o, @(x, y) -dy.o);
 
 
     %
