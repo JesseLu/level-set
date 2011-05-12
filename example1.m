@@ -14,18 +14,18 @@
     % Initialize grid.
     %
 
-lset_grid([160 160]);
+lset_grid([80 80]);
 
 
     % 
     % Construct the initial structure/interface.
     %
 
-phi = lset_box([0 0], [60 40]);
-phi = lset_union(phi, lset_circle([-40 0], 30));
-phi = lset_intersect(phi, lset_complement(lset_circle([-40 0], 10)));
-phi = lset_intersect(phi, lset_complement(lset_circle([40 0], 20)));
-phi = lset_union(phi, lset_circle([40 0], 10));
+phi = lset_circle([-10 0], 3);
+phi = lset_union(phi, lset_circle([10 0], 3));
+% phi = lset_intersect(phi, lset_complement(lset_circle([-40 0], 10)));
+% phi = lset_intersect(phi, lset_complement(lset_circle([40 0], 20)));
+% phi = lset_union(phi, lset_circle([40 0], 10));
 
 
     % 
@@ -38,8 +38,8 @@ phi = lset_union(phi, lset_circle([40 0], 10));
     % 
     % Construct a velocity field.
     %
-
-V = lset_velfield(@(x, y) y, @(x, y) -x);
+a = 0;
+V = lset_velfield(@(x, y) -(x+0.1).^-1 .* (abs(y)+1).^-1, @(x, y) 0.2*sign(y));
 
 
     %
@@ -49,7 +49,7 @@ V = lset_velfield(@(x, y) y, @(x, y) -x);
 
 while (true)
     lset_plot(phi); % Visualize.
-    phi = update_interface(phi, V); % Move the interface.
+    phi = update_interface(phi, V, 0); % Move the interface.
     [phi, err] = signed_distance(phi, 1e-3); % Make phi more sdf-like.
 end
 

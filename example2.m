@@ -14,18 +14,25 @@
     % Initialize grid.
     %
 
-lset_grid([160 160]);
+lset_grid([80 80]);
 
 
     % 
     % Construct the initial structure/interface.
     %
 
-phi = lset_circle([0 0], 60);
-phi = lset_intersect(phi, lset_complement(lset_box([-60 0], [80 20])));
-phi = lset_intersect(phi, lset_complement(lset_box([+60 0], [80 20])));
-phi = lset_intersect(phi, lset_complement(lset_circle([0 -60], 30)));
-phi = lset_intersect(phi, lset_complement(lset_circle([0 40], 20)));
+% phi = lset_circle([0 0], 60);
+% phi = lset_intersect(phi, lset_complement(lset_box([-60 0], [80 20])));
+% phi = lset_intersect(phi, lset_complement(lset_box([+60 0], [80 20])));
+% phi = lset_intersect(phi, lset_complement(lset_circle([0 -60], 30)));
+% phi = lset_intersect(phi, lset_complement(lset_circle([0 40], 20)));
+phi = lset_circle([0 0], 30);
+phi = lset_intersect(phi, lset_complement(lset_circle([0 0], 27)));
+phi = lset_union(phi, lset_circle([-10 0], 10));
+phi = lset_union(phi, lset_circle([15 0], 10));
+phi = lset_intersect(phi, lset_complement(lset_box([30 0], [78 4])));
+
+
 
 
     % 
