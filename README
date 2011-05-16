@@ -1,0 +1,6 @@
+A simple 2D level-set method based on Osher and Fedkiw, Level Set Methods and Dynamic Implicit Surfaces (Springer 2003).
+
+* Build a boundary out of circles and boxes.
+* Initialize/reinitialize boundary to form an approximate signed distance function.
+* Advect the boundary with respect to an external velocity field.
+* Move boundary with respect to boundary curvature.
