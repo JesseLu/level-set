@@ -1,0 +1,72 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\grad}{\nabla}
+
+\title{Documentation for Level Set Method Package}
+\author{Jesse Lu, \texttt{jesselu@stanford.edu}}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{What is a level set?}
+A level set is an \emph{implicit} definition of a boundary. 
+For example, in two dimensions, 
+    \be \phi(x,y) = x^2 + y^2 - 1 \ee
+can \emph{implicitly} define a circle of radius 1 as the boundary
+    \be \phi(x,y) = 0, \ee
+which is the 0-level set of $\phi$.
+
+We will use the convention of specifying boundaries using the 0-level set of $\phi$. 
+Also, we consider the interior of a boundary as $\phi<0$ and its exterior as $\phi>0$.
+
+
+\section{Basic mathematical properties}
+\subsection{Derivative}
+We will use the notation $\phi_x= \delta \phi / \delta x$ to signify the partial derivative.
+
+On a discretized grid, the derivative can be calculated either as
+    \be \phi_x^+(i,j) = \frac{\phi(i+1,j) - \phi(i,j)}{\Delta x}, \ee
+    \be \phi_x^0(i,j) = \frac{\phi(i+1,j) - \phi(i-1,j)}{2 \Delta x}, \ee
+    or
+    \be \phi_x^-(i,j) = \frac{\phi(i,j) - \phi(i-1,j)}{\Delta x}, \ee
+the appropriate choice usually given by stability and accuracy considerations.
+
+Similarily, the second derivative can be calculated as 
+    \be \phi_{xx}(i,j) = \frac{\phi(i-1,j) - 2\phi(i,j) + \phi(i-1,j)}
+        {\Delta x^2}. \ee
+
+\subsection{Gradient}
+The gradient of $\phi$ is 
+    \be \grad\phi = (\phi_x, \phi_y, \phi_z), \ee
+where the appropriate partials are assumed.
+
+Note that the outward (unit) normal of the boundary is then given by
+    \be \vec{N} = \frac{\grad\phi}{|\grad\phi|} \ee
+along the boundary.
+
+\subsection{Curvature}
+The curvature is defined as
+    \be \kappa = \grad \cdot \vec{N} = 
+        \frac{\phi_x^2\phi_{yy} - 2\phi_x\phi_y\phi_{xy} + \phi_y^2\phi_{xx}}
+        {|\grad\phi|^3}. \ee
+
+
+\section{Signed distance function}
+A signed distance function $\phi$ not only defines a boundary on its 0-level set but has the additional property,
+    \be |\grad\phi| = 1, \ee
+which allows movement of the boundary to be ``well-defined''.
+
+To construct the signed distance function, find the stable solution of 
+    \be \phi_t + S(\phi_0)(|\grad\phi - 1) = 0 \ee
+where
+    \be S(\phi_0) = \frac{\phi_0}{\sqrt{\phi_0^2 - \Delta x^2}} \ee
+and $\phi_0$ is the initial description of the interface. See chapter 7 of ref.~\cite{OF} for more details. Note that this requires moving an interface relative to its normal direction, covered below.
+
+\begin{thebibliography}{99}
+\bibitem{OF} Stanley Osher, Ronald Fedkiw, \emph{Level Set Methods and Dynamic Implicit Surfaces} (Springer 2003).
+\end{thebibliography}
+\end{document}
