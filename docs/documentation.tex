@@ -4,6 +4,7 @@
 \newcommand{\be}{\begin{equation}}
 \newcommand{\ee}{\end{equation}}
 \newcommand{\grad}{\nabla}
+\newcommand{\ext}{\text{ext}}
 
 \title{Documentation for Level Set Method Package}
 \author{Jesse Lu, \texttt{jesselu@stanford.edu}}
@@ -65,6 +66,40 @@ To construct the signed distance function, find the stable solution of
 where
     \be S(\phi_0) = \frac{\phi_0}{\sqrt{\phi_0^2 - \Delta x^2}} \ee
 and $\phi_0$ is the initial description of the interface. See chapter 7 of ref.~\cite{OF} for more details. Note that this requires moving an interface relative to its normal direction, covered below.
+
+\section{Interface motion using a Hamilton-Jacobi formulation}
+In order to add time dynamics (motion) to the interface, we cast $\phi$ into the Hamilton-Jacobi equation
+\be \phi_t + H(\grad \phi) = 0. \ee
+
+\subsection{Numerical discretization in time}
+We use the forward Euler time discretization, following Eq. 5.9 of ref.~\cite{OF},
+\be \frac{\phi^{n+1} - \phi^n}{\Delta t} + H^n(\grad \phi) = 0. \ee
+
+\subsection{Numerical discretization in space}
+We employ Godunov's scheme as outline in sections 5.3.3 and 6.2--6.4 in ref.~\cite{OF} to choose the most appropriate spatial derivative of $\phi$. 
+The scheme is based on the following mechanism,
+\be \hat{H} = \ext_x \ext_y H(\phi_x, \phi_y), \ee
+where
+\be \ext_x = \begin{cases}
+    \min_{\phi_x \in I_x} H(\phi_x, \phi_y)& \text{if $\phi_x^- < \phi_x^+$,} \\
+    \max_{\phi_x \in I_x} H(\phi_x, \phi_y)& \text{if $\phi_x^- > \phi_x^+$.}
+    \end{cases} \ee
+Here, $I_x$ denotes the interval $[\phi_x^-, \phi_x^+]$.
+
+
+\section{Motion in an external velocity field}
+If $H(\grad \phi) = \vec{V} \cdot \grad \phi = u\phi_x + v\phi_y$, then Godunov's scheme chooses the derivatives in the following way,
+\be \phi_x = \begin{cases}
+    \phi_x^- & \text{if $u > 0$,} \\
+    \phi_x^+ & \text{if $u < 0$.} \end{cases} \ee
+
+Also, the time interval should be 
+\be \Delta t = \frac{\alpha} 
+    {\max\left\{\frac{|u|}{\Delta x} + \frac{|v|}{\Delta y} \right\}} \ee
+in order to obey the Courant-Friedreichs-Lewy (CFL) stability condition, with $\alpha < 1$. A good choice is apparently $\alpha = 0.9$.
+
+\section{Motion in the normal direction}
+If $H(\grad \phi) = a |\grad \phi|$, then Godunov's scheme is considerably more complicated.
 
 \begin{thebibliography}{99}
 \bibitem{OF} Stanley Osher, Ronald Fedkiw, \emph{Level Set Methods and Dynamic Implicit Surfaces} (Springer 2003).
