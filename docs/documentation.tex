@@ -99,7 +99,31 @@ Also, the time interval should be
 in order to obey the Courant-Friedreichs-Lewy (CFL) stability condition, with $\alpha < 1$. A good choice is apparently $\alpha = 0.9$.
 
 \section{Motion in the normal direction}
-If $H(\grad \phi) = a |\grad \phi|$, then Godunov's scheme is considerably more complicated.
+If $H(\grad \phi) = a |\grad \phi|$, then Godunov's scheme is somewhat more complicated, but can be summarized as,
+
+\begin{center}
+\begin{tabular}{c|c c c}
+Choice of $\phi_x$ & sign of $\phi_x^-$ & sign of $\phi_x^+$ & Type \\ \hline
+$\phi_x^-$ & positive & positive & upwinding \\
+$\phi_x^+$ & negative & negative & upwinding \\
+$0$ & negative & positive & expansion \\
+$\text{argmax}_{\phi_x^\pm}|a\phi_x^\pm|$ & positive & negative & shock 
+\end{tabular}
+\end{center}
+
+Alternatively, Eqs. 6.3 and 6.4 from ref.~\cite{OF} can be used, which state
+\be \phi_x^2 = \begin{cases}
+    \max(\max(\phi_x^-,0)^2, \min(\phi_x^+,0)^2) & \text{if $a > 0$,} \\
+    \max(\min(\phi_x^-,0)^2, \max(\phi_x^+,0)^2) & \text{if $a < 0$.} 
+    \end{cases} \ee
+
+A stable time step for $\alpha < 1$ is 
+\be \Delta t = \frac{\alpha}{\max\left\{\frac{|H_x|}
+    {\Delta x} + \frac{|H_y|}{\Delta y}\right\}}, \ee
+as expected from the CFL condition, where $H_x = a \phi_x / |\grad \phi|$.
+
+\section{Motion involving mean curvature}
+...
 
 \begin{thebibliography}{99}
 \bibitem{OF} Stanley Osher, Ronald Fedkiw, \emph{Level Set Methods and Dynamic Implicit Surfaces} (Springer 2003).
