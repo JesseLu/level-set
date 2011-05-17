@@ -43,8 +43,8 @@ V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
 
 
     %
-    % Move the surface within the velocity field, keep phi "close" to a
-    % signed distance function.
+    % Move the surface by mean curvature, keep phi "roughly" a signed 
+    % distance function.
     %
 
 while (true)
