@@ -1,5 +1,5 @@
-function [phi] = update_interface(phi, V, a, b)
-% PHI = UPDATE_INTERFACE(PHI, V, A, B)
+function [phi] = update_interface(phi, V, a, b, varargin)
+% PHI = UPDATE_INTERFACE(PHI, V, A, B, ALPHA)
 % 
 % Description
 %     Update phi to reflect different types of interface motion:
@@ -21,10 +21,21 @@ function [phi] = update_interface(phi, V, a, b)
 %         Coefficient for motion involving mean curvature. Must be positive to
 %         be stable.
 % 
+%     ALPHA: Positive number (optional).
+%         CFL coefficient for time step. Use 0 < ALPHA < 1 to ensure numerical
+%         stability. Default value = 0.9.
+% 
 % Outputs
 %     PHI: 2-dimensional array.
 %         Updated level-set fuction.
         
+% Determine alpha, the optional input parameter.
+if (isempty(varargin))
+    alpha = 0.9;
+else
+    alpha = varargin{1};
+end
+
 
     %
     % Obtain partial derivatives of phi.
@@ -32,9 +43,10 @@ function [phi] = update_interface(phi, V, a, b)
 
 [dx, dy, dxx, dxy, dyy] = derivatives(phi);
 
+
     % 
     % Update phi, using upwind differencing.
-    % Reference: Chapter 3 in Osher and Fedkiw, Level Set Methods
+    % Reference: Chapters 3, 4, and 6 in Osher and Fedkiw, Level Set Methods
     % and Dynamic Implicit Surfaces (Springer 2003).
     %
 
@@ -53,8 +65,8 @@ k = (dx.o.^2 .* dyy - 2 * dx.o .* dy.o .* dxy + dy.o.^2 .* dxx) ./ ...
     (dx.o.^2 + dy.o.^2);
 
 % Choose the time-step.
-maxH = max(cat(3, abs(V.x(:)) + abs(V.y(:)), abs(H_normal(:))), [], 3);
-dt = 0.9 / max(maxH(:) + 4*b);
+maxH = max([abs(V.x(:))+abs(V.y(:)); abs(H_normal(:))]);
+dt = alpha / max(maxH + 4*b);
 
 % Update phi.
 phi = phi - dt * ((H_extvel + H_normal) - b*k);

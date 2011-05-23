@@ -36,7 +36,7 @@ grid_spacing = 1.0;
     % Make sure there are actually boundaries on the grid!
     %
 
-if (all(sign(phi) == 1) | all(sign(phi) == -1))
+if (all(sign(phi(:)) == 1) | all(sign(phi(:)) == -1))
     error('No interfaces found on the grid.');
 end
 
