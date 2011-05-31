@@ -65,7 +65,8 @@ k = (dx.o.^2 .* dyy - 2 * dx.o .* dy.o .* dxy + dy.o.^2 .* dxx) ./ ...
     (dx.o.^2 + dy.o.^2);
 
 % Choose the time-step.
-maxH = max([abs(V.x(:))+abs(V.y(:)); abs(H_normal(:))]);
+nb = @(x) x(:) .* ((phi(:) >= -3) & (phi(:) <= 3));
+maxH = max([abs(nb(V.x))+abs(nb(V.y)); abs(nb(H_normal))]);
 dt = alpha / max(maxH + 4*b);
 
 % Update phi.

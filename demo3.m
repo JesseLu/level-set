@@ -45,7 +45,7 @@ V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
     %
 
 while (true)
-    lset_plot(phi); % Visualize.
+    lset_plot(phi); drawnow; % Visualize.
     phi = update_interface(phi, V, 1, 0); % Move the interface.
     try
         [phi, err] = signed_distance(phi, 1e-3); % Make phi more sdf-like.

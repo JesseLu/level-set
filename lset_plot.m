@@ -13,4 +13,4 @@ set(gca, 'Ydir', 'normal');
 hold on;
 contour(phi', [0 0], 'r-', 'LineWidth', 3);
 hold off
-drawnow;
+% drawnow;
