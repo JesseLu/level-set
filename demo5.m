@@ -30,12 +30,12 @@ lset_grid(dims);
     %
 
 % Simple circle.
-radius = 4;
-spacing = 12;
+radius = 1;
+spacing = 3;
 
-phi = -ones(dims); % Empty level-set.
-for i = [spacing : spacing : dims(1)-spacing] - dims(1)/2
-    for j = [spacing : spacing : dims(2)-spacing] - dims(2)/2
+phi = -Inf * ones(dims); % Empty level-set.
+for i = [0 : spacing : dims(1)] - dims(1)/2
+    for j = [0 : spacing : dims(2)] - dims(2)/2
         phi = lset_intersect(phi, lset_complement(lset_circle([i j], radius)));
     end
 end
@@ -73,8 +73,7 @@ while (true)
 %     % this keeps the contour smooth.
 %     phi = update_interface(phi, V, phi0, 10); % Move the interface.
 
-    fprintf('.');
-    [phi, err] = signed_distance(phi, 1e10); % Make phi more sdf-like.
+    [phi, err] = signed_distance(phi, 1e-1); % Make phi more sdf-like.
 end
 
 

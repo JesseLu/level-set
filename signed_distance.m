@@ -63,6 +63,12 @@ for k = 1 : 1e3
     err = norm(norm_gradient(phi, S) - 1) / prod(size(phi));
     err_hist(end+1) = err;
 
+    if isnan(phi)
+        figure(1); subplot 111;
+        imagesc(norm_gradient(phi, S));
+        error('thing');
+    end
+
     if (err < err_limit)
         return
     end

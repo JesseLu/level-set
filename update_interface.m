@@ -61,8 +61,12 @@ H_normal = a .* norm_gradient(phi, a);
 % Compute the curvature term, which is kappa * |grad phi|.
 % In other words, equation 1.8 of Osher and Fedkiw, with one less power 
 % in the denominator. 
+k_denom = (dx.o.^2 + dy.o.^2);
+k_denom(find(k_denom == 0)) = 1;
 k = (dx.o.^2 .* dyy - 2 * dx.o .* dy.o .* dxy + dy.o.^2 .* dxx) ./ ...
-    (dx.o.^2 + dy.o.^2);
+    k_denom;
+% k = (dx.o.^2 .* dyy - 2 * dx.o .* dy.o .* dxy + dy.o.^2 .* dxx) ./ ...
+%     (dx.o.^2 + dy.o.^2);
 
 % Choose the time-step.
 nb = @(x) x(:) .* ((phi(:) >= -3) & (phi(:) <= 3));
