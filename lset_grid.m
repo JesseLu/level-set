@@ -16,8 +16,7 @@ x = 1 : dims(1);
 y = 1 : dims(2);
 [x, y] = ndgrid (x, y);
 center = [mean(x(:)), mean(y(:))];
-x = x - center(1);
-y = y - center(2);
 
 global LSET_GRID
-LSET_GRID = struct('x', x, 'y', y, 'center', center, 'dims', dims);
+LSET_GRID = struct('x', x-center(1), 'y', y-center(2), ...
+    'x_raw', x, 'y_raw', y, 'center', center, 'dims', dims);
