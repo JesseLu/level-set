@@ -39,13 +39,6 @@ phi = lset_circle([-5 0], 15);
 [phi, err] = signed_distance(phi, 1e-3);
 
 
-    % 
-    % Construct a (zero) velocity field.
-    %
-
-V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
-
-
     %
     % Move the surface within the velocity field, keep phi "close" to a
     % signed distance function.
@@ -57,11 +50,11 @@ while (true)
     contour(phi0', [0 0], 'g-', 'LineWidth', 2);
     hold off
     drawnow
-    phi = update_interface(phi, V, phi0, 0); % Move the interface.
+    phi = update_interface(phi, [], phi0, 0); % Move the interface.
 
 %     % Use this update to add a significant amount of curvature motion, 
 %     % this keeps the contour smooth.
-%     phi = update_interface(phi, V, phi0, 10); % Move the interface.
+%     phi = update_interface(phi, [], phi0, 10); % Move the interface.
 
     [phi, err] = signed_distance(phi, 1e-1); % Make phi more sdf-like.
 end

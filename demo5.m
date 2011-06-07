@@ -33,13 +33,6 @@ phi = lset_checkered;
 [phi, err] = signed_distance(phi, 1e-1);
 
 
-    % 
-    % Construct a (zero) velocity field.
-    %
-
-V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
-
-
     %
     % Move the surface within the velocity field, keep phi "close" to a
     % signed distance function.
@@ -50,7 +43,7 @@ for cnt = 1 : 50
     hold on; contour(phi0', [0 0], 'g-', 'LineWidth', 2); hold off;
     drawnow
 
-    phi = update_interface(phi, V, phi0, 0); % Move the interface.
+    phi = update_interface(phi, [], phi0, 0); % Move the interface.
 
     [phi, err] = signed_distance(phi, 1e-1); % Make phi more sdf-like.
 end

@@ -35,13 +35,6 @@ phi = lset_intersect(phi, lset_complement(lset_box([30 0], [78 4])));
 [phi, err] = signed_distance(phi, 1e-1);
 
 
-    % 
-    % Construct a (zero) velocity field.
-    %
-
-V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
-
-
     %
     % Move the surface by mean curvature, keep phi "roughly" a signed 
     % distance function.
@@ -49,7 +42,7 @@ V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
 
 while (true)
     lset_plot(phi); drawnow; % Visualize.
-    phi = update_interface(phi, V, 0, 3); % Move the interface.
+    phi = update_interface(phi, [], 0, 3); % Move the interface.
     try
         [phi, err] = signed_distance(phi, 1e-3); % Make phi more sdf-like.
     catch

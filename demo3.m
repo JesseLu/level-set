@@ -32,13 +32,6 @@ phi = lset_union(phi, lset_circle([35 0], 15));
 [phi, err] = signed_distance(phi, 1e-1);
 
 
-    % 
-    % Construct a (zero) velocity field.
-    %
-
-V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
-
-
     %
     % Move the surface within the velocity field, keep phi "close" to a
     % signed distance function.
@@ -46,7 +39,7 @@ V = lset_velfield(@(x, y) 0*x, @(x, y) 0*y);
 
 while (true)
     lset_plot(phi); drawnow; % Visualize.
-    phi = update_interface(phi, V, 1, 0); % Move the interface.
+    phi = update_interface(phi, [], 1, 0); % Move the interface.
     try
         [phi, err] = signed_distance(phi, 1e-3); % Make phi more sdf-like.
     catch

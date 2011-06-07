@@ -12,12 +12,13 @@ function [phi] = update_interface(phi, V, a, b, varargin)
 %         The level-set function.
 % 
 %     V: Structure.
-%         Describes the velocity field.
+%         Describes the velocity field. If V = [], a zero-velocity field will
+%         be used.
 % 
 %     A: 2-dimensional array.
 %         Coefficient for motion in the normal direction.
 % 
-%     B: Positive number.
+%     B: Non-negative number.
 %         Coefficient for motion involving mean curvature. Must be positive to
 %         be stable.
 % 
@@ -30,10 +31,15 @@ function [phi] = update_interface(phi, V, a, b, varargin)
 %         Updated level-set fuction.
         
 % Determine alpha, the optional input parameter.
-if (isempty(varargin))
+if isempty(varargin)
     alpha = 0.9;
 else
     alpha = varargin{1};
+end
+
+% See if a velocity field was actually specified.
+if isempty(V)
+    V = struct('x', 0, 'y', 0);
 end
 
 
